@@ -1,5 +1,6 @@
 const needle = require('needle');
 const axios = require('axios');
+const config = require('dotenv').config();
 const TOKEN = process.env.TWITTER_BEARER_TOKEN;
 const botToken = process.env.TRADERS_SLACK;
 const slackURL = 'https://slack.com/api/chat.postMessage';
@@ -104,7 +105,8 @@ function streamTweets() {
       // twitter sends an empty response to signify no new tweets
       // it seems like after a short time the node app will just fail after
       // getting so many empty responses, which is less than ideal
-      console.log(error);
+      // console.log(error);
+      console.log('no new tweets found');
     }
   });
 }
@@ -113,8 +115,44 @@ async function sendToSlack(json) {
   const res = await axios.post(
     slackURL,
     {
+      type: 'interactive_message',
       channel: '#shamsbot_test',
       text: `https://twitter.com/${json.data.author_id}/status/${json.data.id}`,
+
+      // removing attachments for now until routes are set up properly
+      // attachments: [
+      //   {
+      //     fallback: 'Unsuccessful Tweet',
+      //     callback_id: 'shams_fail',
+      //     color: '#3AA3E3',
+      //     attachment_type: 'default',
+      //     actions: [
+      //       {
+      //         name: 'tweet',
+      //         text: 'Graded',
+      //         style: 'primary',
+      //         type: 'button',
+      //         value: 'graded',
+      //         response_type: 'ephemeral',
+      //         replace_original: true,
+      //         delete_original: true,
+      //       },
+      //       {
+      //         name: 'tweet',
+      //         text: 'Ignore',
+      //         style: 'danger',
+      //         type: 'button',
+      //         value: 'ignore',
+      //       },
+      //       {
+      //         name: 'tweet',
+      //         text: 'Close',
+      //         type: 'button',
+      //         value: 'closed',
+      //       },
+      //     ],
+      //   },
+      // ],
     },
     { headers: { authorization: `Bearer ${botToken}` } }
   );
