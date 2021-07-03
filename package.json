@@ -147,7 +147,8 @@
     "ws": "^7.4.6"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/index",
+    "dev": "nodemon server/index"
   },
   "repository": {
     "type": "git",
@@ -159,5 +160,8 @@
   "bugs": {
     "url": "https://github.com/denvermullets/shamsbot/issues"
   },
-  "homepage": "https://github.com/denvermullets/shamsbot#readme"
+  "homepage": "https://github.com/denvermullets/shamsbot#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.9"
+  }
 }
